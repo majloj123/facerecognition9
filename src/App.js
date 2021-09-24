@@ -91,32 +91,35 @@ class App extends Component {
   }
 
   onSubmit = () => {
-    this.setState({imageUrl: this.state.input});
-    fetch("https://pure-journey-82802.herokuapp.com/imageurl", {
+    if(this.state.input !== this.state.imageUrl) {
+      this.setState({imageUrl: this.state.input});
+      fetch("https://pure-journey-82802.herokuapp.com/imageurl", {
       method: "post",
       headers: {"Content-Type": "application/json"},
       body: JSON.stringify({
         input: this.state.input
+        })
       })
-    })
-    .then(response => response.json())
-    .then(response => {
-      if (response) {
-        fetch("https://pure-journey-82802.herokuapp.com/image", {
+      .then(response => response.json())
+      .then(response => {
+        if (response !== "unable to work with API") {
+          fetch("https://pure-journey-82802.herokuapp.com/image", {
           method: "put",
           headers: {"Content-Type": "application/json"},
           body: JSON.stringify({
             id: this.state.user.id,
+            })
           })
-        })
-          .then(response => response.json())
-          .then(count => {
-            this.setState(Object.assign(this.state.user, {entries: count}))
-          })
+            .then(response => response.json())
+            .then(count => {
+              this.setState(Object.assign(this.state.user, {entries: count}))
+            })
           .catch(console.log);
-      }
+        }
       this.displayFaceBox(this.calculateFaceLocation(response))})
-    .catch(err => console.log(err));
+      .catch(err => console.log(err));
+    }
+    
   }
 
   onRouteChange = (route) => {
