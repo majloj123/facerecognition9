@@ -7,3 +7,9 @@
     background-color:#e1ebbd;
     background-size: 128px 128px;
 }
+
+@media (min-width: 800px) {
+    button.mt1 {
+        margin-top: 0px;
+    }
+}
